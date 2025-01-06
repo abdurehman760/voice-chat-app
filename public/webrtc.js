@@ -26,9 +26,15 @@ async function initWebRTC() {
     pc.ontrack = e => {
       audioEl.srcObject = e.streams[0];
       document.getElementById('aiContainer').classList.add('speaking');
+      document.getElementById('circle1').style.display = 'block';
+      document.getElementById('circle2').style.display = 'block';
+      document.getElementById('circle3').style.display = 'block';
       e.streams[0].getTracks().forEach(track => {
         track.onended = () => {
           document.getElementById('aiContainer').classList.remove('speaking');
+          document.getElementById('circle1').style.display = 'none';
+          document.getElementById('circle2').style.display = 'none';
+          document.getElementById('circle3').style.display = 'none';
         };
       });
     };
@@ -57,6 +63,9 @@ async function initWebRTC() {
           clearTimeout(speechTimeout);
           audioChunks = [];
           document.getElementById('userContainer').classList.add('speaking');
+          document.getElementById('circle1').style.display = 'block';
+          document.getElementById('circle2').style.display = 'block';
+          document.getElementById('circle3').style.display = 'block';
         }
         audioChunks.push(...input);
       } else {
@@ -66,6 +75,9 @@ async function initWebRTC() {
             console.log('User stopped speaking');
             isSpeaking = false;
             document.getElementById('userContainer').classList.remove('speaking');
+            document.getElementById('circle1').style.display = 'none';
+            document.getElementById('circle2').style.display = 'none';
+            document.getElementById('circle3').style.display = 'none';
             // Handle voice detection logic here
             processUserSpeech(audioChunks);
           }, 1000); // Wait for 1 second of silence before processing
@@ -77,8 +89,14 @@ async function initWebRTC() {
     dc.addEventListener('message', (e) => {
       console.log(e);
       document.getElementById('aiContainer').classList.add('speaking');
+      document.getElementById('circle1').style.display = 'block';
+      document.getElementById('circle2').style.display = 'block';
+      document.getElementById('circle3').style.display = 'block';
       setTimeout(() => {
         document.getElementById('aiContainer').classList.remove('speaking');
+        document.getElementById('circle1').style.display = 'none';
+        document.getElementById('circle2').style.display = 'none';
+        document.getElementById('circle3').style.display = 'none';
       }, 1000); // Adjust duration as needed
       // Handle server responses here
     });
